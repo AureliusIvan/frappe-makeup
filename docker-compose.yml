@@ -1,5 +1,4 @@
 services:
-
   mariadb:
     image: mariadb:10.6
     healthcheck:
@@ -72,7 +71,6 @@ services:
       SOCKETIO_PORT: "9000"
 
   dev:
-    #    image: frappe/bench:v5.22.6
     build:
       context: .
       dockerfile: Dockerfile
