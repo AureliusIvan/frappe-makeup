@@ -1,0 +1,113 @@
+services:
+
+  mariadb:
+    image: mariadb:10.6
+    healthcheck:
+      test: mysqladmin ping -h localhost --password=admin
+      interval: 1s
+      retries: 15
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+  redis-queue:
+    image: redis:6.2-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - redis-queue-data:/data
+
+  redis-cache:
+    image: redis:6.2-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - redis-cache-data:/data
+
+  redis-socketio:
+    image: redis:alpine
+    volumes:
+      - redis-socketio-data:/data
+    restart: unless-stopped
+
+  frappe:
+    image: frappe/erpnext:v15.30.0
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  configurator:
+    image: frappe/erpnext:v15.30.0
+    deploy:
+      restart_policy:
+        condition: none
+    entrypoint:
+      - bash
+      - -c
+    command:
+      - >
+        ls -1 apps > sites/apps.txt;
+        bench set-config -g db_host $$DB_HOST;
+        bench set-config -gp db_port $$DB_PORT;
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: "3306"
+      REDIS_CACHE: redis-cache:6379
+      REDIS_QUEUE: redis-queue:6379
+      SOCKETIO_PORT: "9000"
+
+  dev:
+    #    image: frappe/bench:v5.22.6
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: "3306"
+      REDIS_CACHE: redis-cache
+      REDIS_QUEUE: redis-queue
+      REDIS_SOCKETIO: redis-socketio
+      SOCKETIO_PORT: "9000"
+      FRAPPE_DEVELOPER: 1  # Enables developer mode
+    tty: true
+    working_dir: /home/frappe/bench
+    volumes:
+      - ./frappe:/home/frappe/bench
+    ports:
+      - "8000:8000"  # Exposes port 8000 for web access
+    command: >
+      sleep infinity;
+      ls -1 apps > sites/apps.txt;
+      bench set-config -g db_host $$DB_HOST;
+      bench set-config -gp db_port $$DB_PORT;
+      bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+      bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+      bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+      source setup.sh
+volumes:
+  app:
+    driver_opts:
+      type: none
+      o: bind
+      device: ./apps
+  mariadb-data:
+  redis-cache-data:
+  redis-queue-data:
+  redis-socketio-data:
+  sites-vol:
+  assets-vol:
