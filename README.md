@@ -5,10 +5,11 @@ This repository contains the Dockerfile and docker-compose.yml to run ERPNext an
 ## Installation
 
 1. Clone this repository
-2. Run `make up` to start the containers (this will take a while the first time)
-3. Open `http://localhost:8000` in your browser
-4. Follow the setup wizard to complete the installation
-5. Enjoy!
+2. Copy the `.env.example` file to `.env` and fill in the required values
+3. Run `make up` to start the containers (this will take a while the first time)
+4. Open `http://localhost:8000` in your browser
+5. Follow the setup wizard to complete the installation
+6. Enjoy!
 
 ## Usage
 
