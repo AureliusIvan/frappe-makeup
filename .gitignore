@@ -5,3 +5,5 @@ installation
 
 
 .env
+
+volume/*
