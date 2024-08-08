@@ -14,9 +14,12 @@ services:
       - --skip-character-set-client-handshake
       - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
     environment:
-      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: erpnext
+      MYSQL_USER: root
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - ./volume/mariadb:/var/lib/mysql
 
   redis-queue:
     image: redis:7.4-alpine
@@ -56,7 +59,6 @@ services:
       - -c
     command:
       - >
-        ls -1 apps > sites/apps.txt;
         bench set-config -g db_host $$DB_HOST;
         bench set-config -gp db_port $$DB_PORT;
         bench set-config -g redis_cache "redis://$$REDIS_CACHE";
@@ -87,16 +89,7 @@ services:
     volumes:
       - ./frappe:/home/frappe/bench
     ports:
-      - "8000:8000"  # Exposes port 8000 for web access
-    command: >
-      sleep infinity;
-      ls -1 apps > sites/apps.txt;
-      bench set-config -g db_host $$DB_HOST;
-      bench set-config -gp db_port $$DB_PORT;
-      bench set-config -g redis_cache "redis://$$REDIS_CACHE";
-      bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
-      bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
-      source setup.sh
+      - "8000:8000"
 volumes:
   app:
     driver_opts:
