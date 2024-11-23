@@ -1,6 +1,6 @@
 services:
   mariadb:
-    image: mariadb:11.5
+    image: mariadb:11.6
     healthcheck:
       test: mysqladmin ping -h localhost --password=admin
       interval: 1s
