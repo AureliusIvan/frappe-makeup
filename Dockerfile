@@ -1,4 +1,4 @@
-FROM frappe/bench:v5.22.9
+FROM frappe/bench:v5.23.0
 
 # Install redis-server
 USER root
