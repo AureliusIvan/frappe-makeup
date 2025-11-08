@@ -1,0 +1,103 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+DEVELOPMENT.md
+*.md
+docs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# IDE
+.idea/
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
+.DS_Store
+*.code-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.hypothesis/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Temp files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Backups
+backups/
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+
+# Docker
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+# Development scripts
+scripts/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Large directories (already in containers)
+frappe/
+volume/
+installation/
