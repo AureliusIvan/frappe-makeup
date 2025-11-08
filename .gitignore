@@ -1,9 +1,57 @@
+# IDE
 .idea
+.vscode/
+.vs/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Frappe/ERPNext directories
 frappe
 frappe/frappe-bench
 installation
 
-
+# Environment variables
 .env
 
+# Docker volumes
 volume/*
+
+# Backups
+backups/
+*.sql
+*.sql.gz
+*.tar.gz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS
+Thumbs.db
+Desktop.ini
