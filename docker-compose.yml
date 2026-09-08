@@ -44,13 +44,13 @@ services:
     restart: unless-stopped
 
   frappe:
-    image: frappe/erpnext:v15.31.5
+    image: frappe/erpnext:v16.34.2
     deploy:
       restart_policy:
         condition: on-failure
 
   configurator:
-    image: frappe/erpnext:v15.31.5
+    image: frappe/erpnext:v16.34.2
     deploy:
       restart_policy:
         condition: none
